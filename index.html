@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carta para alguien especial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #e4e708, #fbefff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      color: #5c2a4a;
+    }
+
+    #container {
+      max-width: 90%;
+      padding: 2rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 2rem;
+      box-shadow: 0 0 20px rgba(255, 150, 200, 0.3);
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    /* Animaciones */
+    .fade-out {
+      opacity: 0;
+      transform: scale(0.8) rotateX(20deg);
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: scale(1) rotateX(0deg);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      font-family: 'Dancing Script', cursive;
+      margin-top: 2rem;
+      padding: 0.7rem 1.5rem;
+      font-size: 1.2rem;
+      background-color: #f76f91;
+      border: none;
+      border-radius: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff80aa;
+    }
+
+    #audio-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 700px) {
+      #container {
+        padding: 1rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button id="audio-btn">🔊 Escuchala</button>
+
+  <div id="container">
+    <h2 id="text"></h2>
+    <img id="image" src="" alt="" style="display:none;">
+    <button id="next-btn">Siguiente 💖</button>
+    <a id="final-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" style="display:none;">
+      <button>Haz clic aquí para ver algo especial 🎥</button>
+    </a>
+  </div>
+
+  <audio id="bg-music" loop>
+    <source src="BAD.mp3" type="audio/mpeg">
+
+    
+  </audio>
+  
+
+  <script>
+    const phrases = [
+      { text: "Hola, Bel ... 🌸", img:"1.jpg" },
+      { text: "Querio deciarte un feliz cumpleaños y que la pases bien en tu dia.", img: "2.gif" },
+      { text: "En si  💫", img: "https://via.placeholder.com/400x250?text=Imagen+3" },
+      { text: "Gracias por aparecer :) la verdad eres alguien divertida, me caiste bien y todo. ", img: "3.gif" },
+      { text: "Gracias por ser tú, solo quiero que tengas buen dia la hora que veas esto", img: "4.gif" },
+      { text: "La verdad espero que se te cumplan tus metas a futuro", img: "6.jpg" },
+      { text: "Se que te va a ir bien como ingeniera y todo lo que te propongas ✨", img: "7.gif" },
+      { text: "Esta carta no termina aquí...", img: "https://via.placeholder.com/400x250?text=Imagen+8" },
+      { text: "Te envio una foto de mi nagasaki jajaja ", img: "5.jpg" },
+      { text: "Con amor infinito y buenas vibras para tu cumpleaños, alguien que te aprecia más de lo que imaginas. 🌷", img: "8.gif" }
+    ];
+
+    let index = 0;
+
+    const textEl = document.getElementById("text");
+    const imgEl = document.getElementById("image");
+    const nextBtn = document.getElementById("next-btn");
+    const finalLink = document.getElementById("final-link");
+    const music = document.getElementById("bg-music");
+    const audioBtn = document.getElementById("audio-btn");
+    const container = document.getElementById("container");
+
+    function showPhrase() {
+      if (index < phrases.length) {
+        container.classList.add("fade-out");
+
+        setTimeout(() => {
+          const { text, img } = phrases[index];
+          textEl.textContent = text;
+          imgEl.src = img;
+          imgEl.style.display = "block";
+          index++;
+
+          container.classList.remove("fade-out");
+          container.classList.add("fade-in");
+
+          setTimeout(() => {
+            container.classList.remove("fade-in");
+          }, 600);
+
+        }, 600); // Espera la animación fade-out antes de cambiar el contenido
+      } else {
+        container.classList.add("fade-out");
+
+        setTimeout(() => {
+          textEl.innerHTML = "🎉 ¡Gracias por leerla! Esta es la primera vez que hago este tipo carta para una persona. Hay un poscrédito de esto.";
+          imgEl.style.display = "none";
+          nextBtn.style.display = "none";
+          finalLink.style.display = "inline-block";
+
+          container.classList.remove("fade-out");
+          container.classList.add("fade-in");
+
+          setTimeout(() => {
+            container.classList.remove("fade-in");
+          }, 600);
+        }, 600);
+      }
+    }
+
+    nextBtn.addEventListener("click", showPhrase);
+
+    audioBtn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        audioBtn.textContent = "🔈 Escuchala";
+      } else {
+        music.pause();
+        audioBtn.textContent = "🔊 No estas escuchando";
+      }
+    });
+
+    showPhrase();
+  </script>
+</body>
+</html>
